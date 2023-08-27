@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Notes App</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"
+</head>
+<body>
+    <nav>
+        <div class="site-title">
+            <a href="/"><h1>Notes App</h1></a>
+        </div>
+    </nav>
+    <div class="notes-group">
+        <div class="new-note-box">        
+            <form method="post">
+                <textarea id="note" name="note" rows="5", cols="60" required></textarea>
+                <button type="submit">Create Icon</button>
+                <button type="reset">Clear Icon</button>
+            </form>                    
+        </div>
+        <% if (notes.length > 0) { %>
+            <% notes.forEach(note => { %>
+                <div class="note-box">
+                    <form method="post">    
+                        <h3 class="id"><%= note.id %></h3>
+                        <textarea id="note" name="note" rows="5", cols="60" required><%= note.note %></textarea>
+                        <button formaction="/<%= note.id %>/update">Update Icon</button>             
+                        <button formaction="/<%= note.id %>/delete">Delete Icon</button>
+                    </form>    
+                </div>                 
+            <% }) %>
+        <% } else { %>
+            <p>You have to create notes to display.</p>
+        <% } %>
+    </div>
+</body>
+</html>
