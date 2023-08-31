@@ -5,6 +5,7 @@ const app = express()
 const initializeDB = require('./db')
 app.set('view engine', 'ejs')
 
+
 // MIDDLEWARE
 app.use(express.urlencoded({ extended: true }))
 app.use(express.static('public'))

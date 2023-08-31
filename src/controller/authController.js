@@ -1,4 +1,3 @@
-const { ValidationErrorItem } = require('sequelize')
 const userModel = require('../models/users')
 
 const errorHandler = (err) => {
@@ -17,7 +16,7 @@ const logout = async (req, res) => {
 const signup = async (req, res) => {
    try {
       const { username, password } = req.body
-      const newUser = await userModel.create({ username: username, password: password })
+      await userModel.create({ username: username, password: password })
       res.redirect('/')
    }
    catch(ValidationErrorItem) {
