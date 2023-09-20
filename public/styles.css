@@ -206,4 +206,12 @@ footer {
     font-size: 60px;
     color: #ffffff;
     text-shadow: rgb(36, 36, 36) 3px 0 6px;
+}
+
+.about-content {
+    margin: 0 auto;
+    font-family: Arial, "Helvetica Neue", Helvetica, sans-serif;
+    font-size: 60px;
+    color: #ffffff;
+    text-shadow: rgb(36, 36, 36) 3px 0 6px;
 }    
