@@ -34,8 +34,10 @@ const signup = async (req, res) => {
       res.redirect('/notes')
    }
    catch(error) {
-      console.log(error)
-      res.redirect('/')
+      if ((error.message).startsWith('Validation error: ')) {
+         console.log(error.message)
+         res.redirect('/?error=validationError')
+      }
    }
 }
 

@@ -14,15 +14,19 @@
             <button class="login" formaction="/login">Login</button>
             <button class="signup" formaction="/signup">Signup</button>
          </div>   
-         <p class="error-text" hidden>Hata</p>
+         <p class="error-text" hidden></p>
       </form>
    </div>
    <%- include("./partials/footer.ejs") %>
    <script>
       const urlParams = new URLSearchParams(window.location.search);
-      const error = urlParams.get('error');
+      const errorMessage = urlParams.get('error');
       const errorText = document.querySelector('.error-text');
-      if (error) {
+      if (errorMessage == 'loginError') {
+         errorText.innerHTML += 'Wrong credentials, try again.' 
+         errorText.removeAttribute("hidden")
+      } else if (errorMessage == 'validationError') {
+         errorText.innerHTML += 'Username length must be between 5 and 12.\nYou must use all lowercase username.\nPassword length must be between 6 and 15.' 
          errorText.removeAttribute("hidden")
       }
    </script>
