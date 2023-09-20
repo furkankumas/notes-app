@@ -12,7 +12,7 @@ const createToken = (id) => {
  
 const auth = async (req, res) => {
    try {
-      res.header('Cache-Control', ['no-cache', 'no-store']).render('auth')
+      res.render('auth')
    } catch (error) {
       console.log(error)
    }
