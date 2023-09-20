@@ -2,6 +2,12 @@
     <div class="site-title">
         <a href="/notes">Notesapp</a>
     </div>
+    <div class="user-panel">
+        <p>Welcome, <%= username %></p>
+        <form method="post" action="/logout">
+            <button type="submit"><img src="/logout-icon.png" width="30px" height="30px" alt="logout"></button>
+        </form>    
+    </div>
     <div class="navigate-buttons">
         <form method="post" action="/about">
             <button type="submit" formmethod="post" formaction="/about">About</button>

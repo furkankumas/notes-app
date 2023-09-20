@@ -1,22 +1,16 @@
 <!DOCTYPE html>
 <html>
-<head>
-    <title>Notes App</title>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0"
-</head>
+<%- include("./partials/head.ejs") %>
 <body>
-    <nav>
-        <div class="site-title">
-            <a href="/"><h1>Notes App</h1></a>
-        </div>
-    </nav>
+    <%- include("./partials/nav-logged-in.ejs") %>
     <div class="notes-group">
         <div class="new-note-box">        
             <form method="post">
-                <textarea id="note" name="note" rows="5", cols="60" required></textarea>
-                <button type="submit">Create Icon</button>
-                <button type="reset">Clear Icon</button>
+                <textarea id="note" name="note" rows="5", cols="60" maxlength="315" required></textarea>
+                <div class="note-buttons">
+                    <button type="submit"><img src="/save-icon.png" width="54px" height="54px" alt="save"></button>
+                    <button type="reset"><img src="/remove-icon.png" width="45px" height="45px" alt="reset"></button>
+                </div>    
             </form>                    
         </div>
         <% if (notes.length > 0) { %>
@@ -24,9 +18,11 @@
                 <div class="note-box">
                     <form method="post">    
                         <h3 class="id"><%= note.id %></h3>
-                        <textarea id="note" name="note" rows="5", cols="60" required><%= note.note %></textarea>
-                        <button formaction="/<%= note.id %>/update">Update Icon</button>             
-                        <button formaction="/<%= note.id %>/delete">Delete Icon</button>
+                        <textarea id="note" name="note" rows="5", cols="60" maxlength="315" required><%= note.note %></textarea>
+                        <div class="note-buttons">
+                            <button formaction="/notes/<%= note.id %>/update"><img src="/save-icon.png" width="54px" height="54px" alt="update"></button>             
+                            <button formaction="/notes/<%= note.id %>/delete"><img src="/thrash-icon.png" width="45px" height="46px" alt="delete"></button>
+                        </div>    
                     </form>    
                 </div>                 
             <% }) %>
@@ -34,5 +30,6 @@
             <p>You have to create notes to display.</p>
         <% } %>
     </div>
+    <%- include("./partials/footer.ejs") %>
 </body>
 </html>

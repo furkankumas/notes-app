@@ -3,26 +3,36 @@ require('dotenv').config()
 const express = require('express')
 const app = express()
 const initializeDB = require('./db')
+const cookieParser = require('cookie-parser')
+const checkUser = require('./src/middleware/authentication.js')
+
+//MIDDLEWARE
+app.use(express.static('public'))
+app.use(express.urlencoded({ extended: false }))
+app.use(express.json())
+app.use(cookieParser())
+
+//VIEW ENGINE
 app.set('view engine', 'ejs')
 
-
-// MIDDLEWARE
-app.use(express.urlencoded({ extended: true }))
-app.use(express.static('public'))
-
-
-// ROUTES
+//ROUTES
 const authRouter =  require('./src/routes/authRouter.js')
 const notesRouter =  require('./src/routes/notesRouter.js')
 
-app.use('/auth', authRouter)
-app.use('/', notesRouter)
+app.use((req, res, next) => {
+    res.set('Cache-Control', 'no-cache, private, no-store, must-revalidate, max-stale=0, post-check=0, pre-check=0')
+    next()
+})
+app.use('/', authRouter)
+app.use('/notes', checkUser , notesRouter)
+app.use('/about', (req, res) => {
+    res.status(200).render('about')
+})
 app.use((req, res) => {
     res.status(404).render('404')
 })
 
-
-// START
+//START
 const port = process.env.PORT || 3000
 const start = async() => {
     try {
@@ -33,6 +43,6 @@ const start = async() => {
     catch(error) {
         console.log(error)
     }
-};
+}
 
 start()

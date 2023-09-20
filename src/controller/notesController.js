@@ -1,10 +1,12 @@
 const notesModel = require('../models/notes.js')
 const { StatusCodes } = require('http-status-codes')
 
+
 const getNotes = async (req, res) => {
    try {
-      const notes = await notesModel.findAll()
-      res.render('index', {notes: notes})
+      const user = res.locals.user
+      const notes = await notesModel.findAll({ where: { createdBy: user.id}, order: [['id', 'DESC']] })
+      res.render('index', {notes: notes, username: user.username })
    }
    catch(error) {
       console.log(error)
@@ -13,9 +15,10 @@ const getNotes = async (req, res) => {
 
 const createNote = async (req, res) => {
    try {
-      const noteText = req.body
-      notesModel.create(noteText)
-      .then(res.redirect('/'))
+      const user = res.locals.user
+      const noteText = req.body.note
+      await notesModel.create({ note: noteText, createdBy: user.id })
+      await res.status(StatusCodes.CREATED).redirect('/notes')
    }
    catch(error) {
       console.log(error)
@@ -24,14 +27,15 @@ const createNote = async (req, res) => {
 
 const updateNote = async (req, res) => {
    try {
+      const user = res.locals.user
       const noteId = req.params.id
       const noteText = req.body.note
-      console.log(req.body)
-      const note = await notesModel.findOne({ where: { id: noteId } })
+      const note = await notesModel.findOne({ where: { id: noteId, createdBy: user.id } })
       if (note) {
-         await notesModel.update({ note: noteText }, { where: { id: noteId }})
-         .then(res.status(StatusCodes.OK).redirect('/'))
+         await note.update({ note: noteText })  
+         res.status(StatusCodes.OK).redirect('/notes')
       } else {
+         res.status(StatusCodes.NOT_FOUND)
          throw new console.error("No job found");
       }                 
    } catch (error) {
@@ -41,13 +45,18 @@ const updateNote = async (req, res) => {
 
 const deleteNote = async (req, res) => {
    try {
+      const user = res.locals.user
       const noteId = req.params.id
-      const note = await notesModel.findOne({ where: { id: noteId } })
+      //if (user == '' || noteId == "") {
+      //   res.status(StatusCodes.BAD_REQUEST).
+      //}
+      const note = await notesModel.findOne({ where: { id: noteId, createdBy: user.id } })
       if (note) {
-            await notesModel.destroy({ where: { id: noteId } })
-            .then(res.status(StatusCodes.OK).redirect('/'))
+         await note.destroy()
+         res.status(StatusCodes.OK).redirect('/notes')
       } else {
-            throw new console.error(`No job found with id ${ noteId }`);
+         res.status(StatusCodes.NOT_FOUND)
+         throw new console.error(`No job found with id ${ noteId }`);
       }                 
    } catch (error) {
       console.log(error)

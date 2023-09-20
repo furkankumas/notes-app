@@ -17,9 +17,10 @@ const notesModel = initializeDB.define(
             len: [1, 150],
          },
       },
-      //creator: {
-         //type: DataTypes.STRING,
-      //},
+      createdBy: {
+         type: DataTypes.STRING,
+         allowNull: false,
+      },
    },
    {
       timestamps: true

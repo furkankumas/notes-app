@@ -1,46 +1,64 @@
 const userModel = require('../models/users')
+const jwt = require('jsonwebtoken')
+const bcrypt = require('bcrypt')
 
-const errorHandler = (err) => {
-   console.log(err.message)            // DAHA DETAYLI VALIDATION ERROR HANDLING VS. YAPILABİLİR.
+
+const maxAge = 3 * 24 * 60 * 60
+const createToken = (id) => {
+   return jwt.sign({ id }, 'furkan kumas secret', {      //secret'i .env içine ekle drive'daki örneğim gibi...
+      expiresIn: maxAge
+   })
 }
-
-
+ 
 const auth = async (req, res) => {
-   res.render('auth')
+   try {
+      res.header('Cache-Control', ['no-cache', 'no-store']).render('auth')
+   } catch (error) {
+      console.log(error)
+   }
 }
 
 const logout = async (req, res) => {
-   res.render('auth')
+   await res.cookie('jwt', '', { maxAge: 1 })
+   res.redirect('/')
+   console.log('kullanıcı çıkış yaptı\n---')
 }
+
 
 const signup = async (req, res) => {
    try {
       const { username, password } = req.body
-      await userModel.create({ username: username, password: password })
-      res.redirect('/')
+      const user = await userModel.create({ username: username, password: password })
+      const token = createToken(user.id)
+      res.cookie('jwt', token, { httpOnly: true, maxAge: maxAge * 1000 })
+      res.redirect('/notes')
    }
-   catch(ValidationErrorItem) {
-      errorHandler(ValidationErrorItem)
-      res.status(400).send('error, user not created')
+   catch(error) {
+      console.log(error)
+      res.redirect('/')
    }
 }
 
+
 const login = async (req, res) => {
    try {
-      const { username, password } = req.body
-      const user = await userModel.findOne({ where: {username: username, password: password} })
+   const { username, password } = req.body
+      const user = await userModel.findOne({where: {username: username}})
       if (user) {
-         //login
-         console.log('Welcome, ', username)
+         const auth = await bcrypt.compare(password, user.password)
+         if (auth) {
+            const token = createToken(user.id)
+            res.cookie('jwt', token, { httpOnly: true, maxAge: maxAge * 1000 })
+            res.redirect('/notes')
+         }
       }
       else {
          console.log('Wrong credentials, Try again.')
+         res.redirect('/?error=loginError')
       }
-      res.redirect('/')
    }
-   catch(ValidationErrorItem) {
-      const errors = errorHandler(ValidationErrorItem)
-      res.status(400).send(errors)
+   catch(error) {
+      console.log(error)
    }
 }
 

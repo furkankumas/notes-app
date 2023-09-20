@@ -1,18 +1,11 @@
 <!DOCTYPE html>
 <html>
-<head>
-    <title>Notes App</title>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0"
-</head>
+<%- include("./partials/head.ejs") %>
 <body>
-    <nav>
-        <div class="site-title">
-            <a href="/"><h1>Notes App</h1></a>
-        </div>
-    </nav>
-    <div class="not-found content">
-        Page not Found :(
+    <%- include("./partials/nav.ejs") %>   
+    <div class="not-found-content">
+        <p>Page not Found :(</p>
     </div>
+    <%- include("./partials/footer.ejs") %>
 </body>
 </html>

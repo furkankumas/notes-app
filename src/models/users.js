@@ -32,11 +32,11 @@ const userModel = initializeDB.define(
    },
 )
 
-userModel.addHook('beforeSave', 'show logs before saving', async (user) => {
-   console.log('user bout to be created ', user.username)
+userModel.addHook('beforeSave', async (user) => {
+   console.log('hashing password of upcoming newcomer: ', user.username)
    const salt = await bcrypt.genSalt()
    user.password = await bcrypt.hash(user.password, salt)
 })
-
+ 
 
 module.exports = userModel
