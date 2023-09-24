@@ -95,12 +95,21 @@ nav .user-panel button:hover {
     margin: 0 auto;
 }
 
+.auth-group .input-group {
+    display: flex;
+    flex-flow: column wrap;
+    justify-content: center;
+}
+
 .auth-group input {
+    margin-right: auto;
+    margin-left: auto;
+    margin-top: 5px;
+    margin-bottom: 5px;
     width: 550px;
     height: 40px;
     border-style: none;
     border-radius: 10px;
-    margin: 5px 5px 5px;
     font-size: 18px;
     box-shadow: 0px 0px 8px rgb(8, 8, 8);
     text-indent: 7px;
@@ -147,6 +156,19 @@ nav .user-panel button:hover {
     color: rgb(0, 0, 0);
     font-size: 20px;
     padding: 10px 20px 10px 20px;
+}
+
+.error-box {
+    display:flex;
+    justify-content: center;
+    margin-top: 20px;
+}
+
+.error-text {
+    margin-top: 20px;
+    font-family: 'Segoe UI', sans-serif;
+    color: rgb(255, 36, 21);
+    text-shadow: 0px 0px 5px rgb(24, 24, 24);
 }
 
 footer {
