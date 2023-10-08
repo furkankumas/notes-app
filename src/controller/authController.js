@@ -1,3 +1,4 @@
+require('dotenv').config()
 const userModel = require('../models/users')
 const jwt = require('jsonwebtoken')
 const bcrypt = require('bcrypt')
@@ -5,7 +6,7 @@ const bcrypt = require('bcrypt')
 
 const maxAge = 3 * 24 * 60 * 60
 const createToken = (id) => {
-   return jwt.sign({ id }, 'furkan kumas secret', {      //secret'i .env içine ekle drive'daki örneğim gibi...
+   return jwt.sign({ id }, process.env.SECRET, {     
       expiresIn: maxAge
    })
 }

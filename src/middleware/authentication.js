@@ -1,3 +1,4 @@
+require('dotenv').config()
 const jwt = require('jsonwebtoken')
 const userModel = require('../models/users.js')
 
@@ -5,7 +6,7 @@ const userModel = require('../models/users.js')
 const checkUser = (req, res, next) => {
    const token = req.cookies.jwt
    if (token) {
-      jwt.verify(token, 'furkan kumas secret', async (err, decodedToken) => {
+      jwt.verify(token, process.env.SECRET, async (err, decodedToken) => {
          if (err) {
             console.log('token verify error message:', err.message)
             res.locals.user = null
