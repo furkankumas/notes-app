@@ -7,7 +7,7 @@ const userModel = initializeDB.define(
    {
       id: {
          type: DataTypes.UUID,
-         defaultValue: DataTypes.UUIDV4, // Dökümandan bakıp ekledim satırı, yoksa id girmedin diye error veriyordu.
+         defaultValue: DataTypes.UUIDV4,
          primaryKey: true,
       },
       username: {

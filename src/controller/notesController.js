@@ -47,9 +47,6 @@ const deleteNote = async (req, res) => {
    try {
       const user = res.locals.user
       const noteId = req.params.id
-      //if (user == '' || noteId == "") {
-      //   res.status(StatusCodes.BAD_REQUEST).
-      //}
       const note = await notesModel.findOne({ where: { id: noteId, createdBy: user.id } })
       if (note) {
          await note.destroy()
