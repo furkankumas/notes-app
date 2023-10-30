@@ -3,15 +3,15 @@ version: "3.8"
 services:
   app:
     build: 
-      context: ./
-      dockerfile: nodejsdockerfile
+      context: ./nodejs
     ports:
       - "3000:3000"  
     depends_on:
       - db
 
   db:
-    image: postgres:latest
+    build:
+      context: ./postgresql
     restart: always
     environment:
       POSTGRES_USER: ${POSTGRES_USER}
@@ -24,7 +24,7 @@ services:
 
   nginx:
     build: 
-      context: ./
+      context: ./nginx
       dockerfile: nginxdockerfile
     ports:
       - "80:80"
