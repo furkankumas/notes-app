@@ -4,6 +4,12 @@ services:
   app:
     build: 
       context: ./nodejs
+    environment:
+      environment:
+      POSTGRES_USER: ${POSTGRES_USER}
+      POSTGRES_DB: ${POSTGRES_DB}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+      POSTGRES_HOST: ${POSTGRES_HOST}
     ports:
       - "3000:3000"  
     depends_on:
