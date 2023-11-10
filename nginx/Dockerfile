@@ -1,2 +1,2 @@
 FROM nginx:alpine
-COPY ./default /etc/nginx/sites-available/default
+COPY default /etc/nginx/sites-available/default

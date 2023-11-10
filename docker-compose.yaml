@@ -3,9 +3,9 @@ version: "3.8"
 services:
   app:
     build: 
-      context: ./nodejs
+      context: .
+      dockerfile: ./nodejs/Dockerfile
     environment:
-      environment:
       POSTGRES_USER: ${POSTGRES_USER}
       POSTGRES_DB: ${POSTGRES_DB}
       POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
@@ -31,7 +31,6 @@ services:
   nginx:
     build: 
       context: ./nginx
-      dockerfile: nginxdockerfile
     ports:
       - "80:80"
       - "443:443"
