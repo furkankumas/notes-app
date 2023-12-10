@@ -1,2 +1,3 @@
 FROM nginx:alpine
-COPY default /etc/nginx/sites-available/default
+COPY . /etc/nginx/
+RUN sudo ln -s /etc/nginx/sites-available/furkankumas /etc/nginx/sites-enabled/
