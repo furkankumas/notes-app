@@ -1,12 +1,13 @@
-const notesModel = require('../models/notes.js')
+const initializeDB = require('../models')
+const notesModel = initializeDB.notes
 const { StatusCodes } = require('http-status-codes')
 
 
 const getNotes = async (req, res) => {
    try {
       const user = res.locals.user
-      const notes = await notesModel.findAll({ where: { createdBy: user.id}, order: [['id', 'DESC']] })
-      res.render('index', {notes: notes, username: user.username })
+      const note = await notesModel.findAll({ where: { createdBy: user.id}, order: [['id', 'DESC']] })
+      res.render('index', {notes: note, username: user.username })
    }
    catch(error) {
       console.log(error)

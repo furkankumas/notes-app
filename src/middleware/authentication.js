@@ -1,6 +1,7 @@
 require('dotenv').config()
 const jwt = require('jsonwebtoken')
-const userModel = require('../models/users.js')
+const initializeDB = require('../models')
+const userModel = initializeDB.users
 
 // check json web token exists & is verified
 const checkUser = (req, res, next) => {

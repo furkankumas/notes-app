@@ -2,9 +2,10 @@
 require('dotenv').config()
 const express = require('express')
 const app = express()
-const initializeDB = require('./db')
+const initializeDB = require('./src/models')
 const cookieParser = require('cookie-parser')
 const checkUser = require('./src/middleware/authentication.js')
+
 
 //MIDDLEWARE
 app.use(express.static('public'))
@@ -12,8 +13,10 @@ app.use(express.urlencoded({ extended: false }))
 app.use(express.json())
 app.use(cookieParser())
 
+
 //VIEW ENGINE
 app.set('view engine', 'ejs')
+
 
 //ROUTES
 const authRouter =  require('./src/routes/authRouter.js')
@@ -32,13 +35,16 @@ app.use((req, res) => {
     res.status(404).render('404')
 })
 
+
 //START
 const port = process.env.PORT || 3000
 const start = async() => {
     try {
-        app.listen(port, console.log(`Server is listening on port ${port} ...`))
-        initializeDB
-        console.log('DB connected.')
+        initializeDB.sequelize.sync().then((req) => {
+            app.listen(port, () => {
+                console.log(`Server is listening on ${port}...`)
+            })
+        })
     }
     catch(error) {
         console.log(error)
