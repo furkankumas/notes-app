@@ -22,9 +22,10 @@ jobs:
           SSH_PRIVATE_KEY: ${{ secrets.SSH_PRIVATE_KEY }}
         run: |
           echo -e "PORT=${PORT} \nPOSTGRES_USER=${POSTGRES_USER} \nPOSTGRES_DB=${POSTGRES_DB} \nPOSTGRES_PASSWORD=${POSTGRES_PASSWORD} \nPOSTGRES_HOST=${POSTGRES_HOST} \nSECRET=${SECRET}" > .env
-          docker compose up
+          docker compose up -d
         
   deploy:
+    needs: build
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
