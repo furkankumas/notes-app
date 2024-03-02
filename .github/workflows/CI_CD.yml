@@ -4,11 +4,19 @@ on:
     branches:
       - master
 jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Docker Compose Build
+        run: docker compose build
+      - name: Docker Compose Up
+        run: docker compose up
   deploy:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
-      - name: deploy in server
+      - name: Deploy in Server
         env:
           PORT: 3000
           POSTGRES_USER: postgres
@@ -21,7 +29,7 @@ jobs:
         run: |
           echo "${SSH_PRIVATE_KEY}" > ssh_private_key && chmod 600 ssh_private_key
 
-          ssh -i ssh_private_key notesapp@${SERVER_ADDRESS} '
+          ssh -o StrictHostKeyChecking=no -i ssh_private_key notesapp@${SERVER_ADDRESS} '
 
             cd notesapp &&
             docker compose down &&
@@ -33,3 +41,4 @@ jobs:
           '
         
         
+
