@@ -11,7 +11,19 @@ jobs:
       - name: Docker Compose Build
         run: docker compose build
       - name: Docker Compose Up
-        run: docker compose up
+        env:
+          PORT: 3000
+          POSTGRES_USER: postgres
+          POSTGRES_DB: ${{ secrets.POSTGRES_DB }}
+          POSTGRES_PASSWORD: ${{ secrets.POSTGRES_PASSWORD }}
+          POSTGRES_HOST: ${{ secrets.POSTGRES_HOST }}
+          SECRET: ${{ secrets.SECRET }}
+          SERVER_ADDRESS: ${{ secrets.SERVER_ADDRESS }}
+          SSH_PRIVATE_KEY: ${{ secrets.SSH_PRIVATE_KEY }}
+        run: |
+          echo -e "PORT=${PORT} \nPOSTGRES_USER=${POSTGRES_USER} \nPOSTGRES_DB=${POSTGRES_DB} \nPOSTGRES_PASSWORD=${POSTGRES_PASSWORD} \nPOSTGRES_HOST=${POSTGRES_HOST} \nSECRET=${SECRET}" > .env
+          docker compose up
+        
   deploy:
     runs-on: ubuntu-latest
     steps:
@@ -31,7 +43,7 @@ jobs:
 
           ssh -o StrictHostKeyChecking=no -i ssh_private_key notesapp@${SERVER_ADDRESS} '
 
-            cd notesapp &&
+            cd notes-app &&
             docker compose down &&
             git pull origin master &&
             echo -e "PORT=${PORT} \nPOSTGRES_USER=${POSTGRES_USER} \nPOSTGRES_DB=${POSTGRES_DB} \nPOSTGRES_PASSWORD=${POSTGRES_PASSWORD} \nPOSTGRES_HOST=${POSTGRES_HOST} \nSECRET=${SECRET}" > .env &&
