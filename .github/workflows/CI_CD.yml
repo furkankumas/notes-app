@@ -33,10 +33,6 @@ jobs:
         env:
           PORT: 3000
           POSTGRES_USER: postgres
-          POSTGRES_DB: ${{ secrets.POSTGRES_DB }}
-          POSTGRES_PASSWORD: ${{ secrets.POSTGRES_PASSWORD }}
-          POSTGRES_HOST: ${{ secrets.POSTGRES_HOST }}
-          SECRET: ${{ secrets.SECRET }}
           SERVER_ADDRESS: ${{ secrets.SERVER_ADDRESS }}
           SSH_PRIVATE_KEY: ${{ secrets.SSH_PRIVATE_KEY }}
         run: |
@@ -47,7 +43,7 @@ jobs:
             cd notes-app &&
             docker compose down &&
             git pull origin master &&
-            echo -e "PORT=$PORT \nPOSTGRES_USER=$POSTGRES_USER \nPOSTGRES_DB=$POSTGRES_DB \nPOSTGRES_PASSWORD=$POSTGRES_PASSWORD \nPOSTGRES_HOST=$POSTGRES_HOST \nSECRET=$SECRET" > .env &&
+            echo -e "PORT=3000 \nPOSTGRES_USER=postgres \nPOSTGRES_DB=${{ secrets.POSTGRES_DB }} \nPOSTGRES_PASSWORD=${{ secrets.POSTGRES_PASSWORD }} \nPOSTGRES_HOST=${{ secrets.POSTGRES_HOST }} \nSECRET=${{ secrets.SECRET }}" > .env &&
             sudo chmod 600 .env &&
             docker compose build --no-cache &&
             docker compose up -d
