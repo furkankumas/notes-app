@@ -31,8 +31,6 @@ jobs:
       - uses: actions/checkout@v4
       - name: Deploy in Server
         env:
-          PORT: 3000
-          POSTGRES_USER: postgres
           SERVER_ADDRESS: ${{ secrets.SERVER_ADDRESS }}
           SSH_PRIVATE_KEY: ${{ secrets.SSH_PRIVATE_KEY }}
         run: |
@@ -43,7 +41,7 @@ jobs:
             cd notes-app &&
             docker compose down &&
             git pull origin master &&
-            echo -e "PORT=${PORT} \nPOSTGRES_USER=${POSTGRES_USER} \nPOSTGRES_DB=${{ secrets.POSTGRES_DB }} \nPOSTGRES_PASSWORD=${{ secrets.POSTGRES_PASSWORD }} \nPOSTGRES_HOST=${{ secrets.POSTGRES_HOST }} \nSECRET=${{ secrets.SECRET }}" > .env &&
+            echo -e "PORT=3000 \nPOSTGRES_USER=postgres \nPOSTGRES_DB=${{ secrets.POSTGRES_DB }} \nPOSTGRES_PASSWORD=${{ secrets.POSTGRES_PASSWORD }} \nPOSTGRES_HOST=${{ secrets.POSTGRES_HOST }} \nSECRET=${{ secrets.SECRET }}" > .env &&
             chmod 600 .env &&
             docker compose build --no-cache &&
             docker compose up -d
