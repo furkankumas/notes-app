@@ -5,9 +5,12 @@ const app = express()
 const initializeDB = require('./src/models')
 const cookieParser = require('cookie-parser')
 const checkUser = require('./src/middleware/authentication.js')
-
+const helmet = require('helmet')
+const cors = require('cors')
 
 //MIDDLEWARE
+app.use(helmet())
+app.use(cors())
 app.use(express.static('public'))
 app.use(express.urlencoded({ extended: false }))
 app.use(express.json())
